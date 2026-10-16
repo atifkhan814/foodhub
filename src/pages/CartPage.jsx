@@ -1,8 +1,8 @@
 
 import { useState } from 'react';
 import { useCart } from '../context/useCart';
-import CartItem from '../components/cart/CartItem';
-import Checkout from '../components/cart/Checkout';
+import CartItem from '../components/Cart/CartItem';
+import Checkout from '../components/Cart/Checkout';
 import './CartPage.css';
 
 function Cart() {

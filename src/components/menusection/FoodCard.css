@@ -1,0 +1,77 @@
+.food-card {
+  width: 300px;
+  background-color: #ffffff;
+  border: 1px solid #ead8cd;
+  border-radius: 10px;
+  overflow: hidden;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(36, 36, 36, 0.12);
+}
+
+.food-card-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.food-card-content {
+  padding: 20px;
+}
+
+.food-card-content h3 {
+  margin: 0 0 10px;
+
+  color: #242424;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.food-card-content p {
+  margin: 0 0 20px;
+
+  color: #66615c;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.food-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.food-card-price {
+  color: #c65d32;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.add-to-cart-button {
+  padding: 10px 16px;
+
+  background-color: #c65d32;
+  color: #ffffff;
+
+  border: 1px solid #c65d32;
+  border-radius: 6px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.add-to-cart-button:hover {
+  background-color: #a94c27;
+  border-color: #a94c27;
+}

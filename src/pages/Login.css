@@ -1,0 +1,410 @@
+
+/* ===== Overall Page ===== */
+.login-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px;
+    background: #fbf7ef;
+    font-family: Arial, sans-serif;
+}
+
+.login-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 1060px;
+    min-height: 680px;
+    overflow: hidden;
+    border-radius: 15px;
+    background: #ffffff;
+    box-shadow: 0 16px 45px rgba(60, 45, 25, 0.12);
+}
+
+/* ===== Left Welcome Panel ===== */
+.login-welcome {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    padding: 45px;
+    padding-bottom: 245px;
+    overflow: hidden;
+    color: white;
+    background: #211c14;
+}
+
+/* Blurred Restaurant Background */
+.login-welcome::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    z-index: -2;
+    background: url('/food-images/restaurant-background.jpg') center / cover no-repeat;
+    filter: blur(5px);
+    transform: scale(1.04);
+}
+
+/* Dark Overlay */
+.login-welcome::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.78) 0%,
+        rgba(0, 0, 0, 0.66) 55%,
+        rgba(0, 0, 0, 0.12) 100%
+    );
+}
+
+/* Keep Brand and Text Above the Background */
+.foodhub-brand,
+.welcome-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Brand */
+.foodhub-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-icon {
+    color: #ffb000;
+    font-size: 38px;
+}
+
+.foodhub-brand h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 30px;
+}
+
+.foodhub-brand h2 span {
+    color: #ffb000;
+}
+
+.foodhub-brand p {
+    margin: 5px 0 0;
+    color: #eeeeee;
+    font-size: 13px;
+}
+
+/* Welcome Text */
+.welcome-content {
+    margin-top: 45px;
+}
+
+.welcome-content h1 {
+    margin: 0 0 18px;
+    color: #ffffff;
+    font-size: clamp(30px, 3vw, 40px);
+    line-height: 1.22;
+}
+
+.welcome-content h1 span {
+    display: block;
+    margin-top: 5px;
+    color: #ffb21c;
+}
+
+.welcome-description {
+    max-width: 360px;
+    margin: 0;
+    color: #eeeeee;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* Benefits */
+.food-benefits {
+    margin-top: 25px;
+}
+
+.food-benefits p {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin: 17px 0;
+    font-size: 14px;
+}
+
+/* Pizza Photo at the Bottom */
+.welcome-pizza {
+    position: absolute;
+    z-index: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 255px;
+    object-fit: cover;
+    object-position: center;
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 35%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 35%
+    );
+}
+
+/* Tagline */
+.welcome-tagline {
+    position: absolute;
+    z-index: 2;
+    bottom: 12px;
+    left: 45px;
+    margin: 0;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+/* ===== Right Login Panel ===== */
+.login-form-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 45px;
+    background: #ffffff;
+}
+
+.chef-icon {
+    align-self: flex-end;
+    margin-bottom: 20px;
+    color: #ffab00;
+    font-size: 38px;
+}
+
+.login-heading {
+    margin: 0;
+    color: #202a3c;
+    font-size: clamp(30px, 3vw, 39px);
+    line-height: 1.2;
+}
+
+.login-heading span {
+    color: #ff9500;
+}
+
+.login-subheading {
+    margin: 14px 0 32px;
+    color: #485873;
+    font-size: 16px;
+}
+
+/* Input Fields */
+.login-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 23px;
+}
+
+.login-input-group label {
+    color: #263247;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.login-input-group input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #d9e0ed;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #202a3c;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-input-group input::placeholder {
+    color: #98a1b0;
+}
+
+.login-input-group input:focus {
+    border-color: #ff9c13;
+    box-shadow: 0 0 0 3px rgba(255, 156, 19, 0.13);
+}
+
+/* Forgot Password */
+.forgot-password {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -10px;
+    margin-bottom: 25px;
+}
+
+.forgot-password a {
+    color: #2875df;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* Login Button */
+.login-button {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 9px;
+    background: linear-gradient(120deg, #ffb000, #ff7900);
+    color: #ffffff;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 5px 14px rgba(255, 132, 0, 0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.login-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(255, 132, 0, 0.23);
+}
+
+/* OR Divider */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 28px 0;
+    color: #596780;
+    font-size: 14px;
+}
+
+.login-divider span {
+    flex: 1;
+    height: 1px;
+    background: #dfe4ed;
+}
+
+/* Google Button */
+.google-button {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #dce3f0;
+    border-radius: 9px;
+    background: #f8faff;
+    color: #27344c;
+    font-size: 14px;
+}
+
+.google-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+/* Register Prompt */
+.login-form-panel .login-switch {
+    margin: 28px 0 0;
+    color: #667085;
+    font-size: 14px;
+    text-align: center;
+}
+
+.login-switch button {
+    margin-left: 8px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #f28a00;
+    font-size: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.login-switch button:hover {
+    text-decoration: underline;
+}
+
+/* ===== Responsive Layout ===== */
+@media (max-width: 850px) {
+    .login-page {
+        padding: 22px;
+    }
+
+    .login-layout {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+    }
+
+    .login-welcome {
+        min-height: 370px;
+        padding: 32px;
+        padding-bottom: 200px;
+    }
+
+    .welcome-content {
+        margin-top: 32px;
+    }
+
+    .welcome-pizza {
+        height: 210px;
+    }
+
+    .welcome-tagline {
+        left: 32px;
+    }
+
+    .login-form-panel {
+        padding: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-page {
+        padding: 12px;
+    }
+
+    .login-welcome {
+        min-height: 340px;
+        padding: 25px;
+        padding-bottom: 185px;
+    }
+
+    .foodhub-brand h2 {
+        font-size: 27px;
+    }
+
+    .welcome-content {
+        margin-top: 28px;
+    }
+
+    .welcome-content h1 {
+        font-size: 30px;
+    }
+
+    .welcome-description {
+        font-size: 14px;
+    }
+
+    .welcome-pizza {
+        height: 190px;
+    }
+
+    .welcome-tagline {
+        left: 25px;
+    }
+
+    .login-form-panel {
+        padding: 28px 22px;
+    }
+
+    .login-heading {
+        font-size: 30px;
+    }
+}

@@ -1,0 +1,164 @@
+/* Main hero section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  min-height: 540px;
+  padding: 56px 8%;
+  background: #fbf4e9;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Text content */
+.hero-content {
+  flex: 1;
+  max-width: 540px;
+  text-align: left;
+}
+
+.hero-content h1 {
+  margin: 0 0 22px;
+  color: #254734;
+  font-size: clamp(36px, 4.2vw, 58px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -1.5px;
+}
+
+/* Highlight the food-focused message */
+.hero-content h1::after {
+  content: "";
+  display: block;
+  width: 76px;
+  height: 5px;
+  margin-top: 20px;
+  background: #d66b2c;
+  border-radius: 2px;
+}
+
+.hero-content p {
+  max-width: 470px;
+  margin: 0 0 30px;
+  color: #626b61;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+/* Explore menu button */
+.hero-content button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 13px 26px;
+  color: #ffffff;
+  background: #c65d32;
+  border: 2px solid #c65d32;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.hero-content button:hover {
+  background: #a94c27;
+  border-color: #a94c27;
+}
+
+.hero-content button:focus-visible {
+  outline: 3px solid #254734;
+  outline-offset: 4px;
+}
+
+/* Food image area */
+.hero-image {
+  flex: 1;
+  max-width: 490px;
+  min-width: 0;
+  position: relative;
+}
+
+.hero-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-height: 450px;
+  object-fit: cover;
+  border: 7px solid #ffffff;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+/* Tablet layout */
+@media (max-width: 900px) {
+  .hero-section {
+    gap: 30px;
+    min-height: auto;
+    padding: 48px 5%;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(32px, 4.5vw, 44px);
+  }
+
+  .hero-content p {
+    font-size: 15px;
+  }
+
+  .hero-image img {
+    max-height: 360px;
+  }
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+  .hero-section {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 30px;
+    padding: 42px 20px;
+  }
+
+  .hero-content {
+    max-width: none;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(32px, 8vw, 42px);
+    letter-spacing: -0.8px;
+  }
+
+  .hero-content h1::after {
+    margin: 18px auto 0;
+  }
+
+  .hero-content p {
+    margin: 0 auto 24px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+  }
+
+  .hero-image img {
+    width: 100%;
+    max-height: none;
+    border-width: 5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content button {
+    transition: none;
+  }
+}

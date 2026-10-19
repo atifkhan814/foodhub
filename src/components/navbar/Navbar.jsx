@@ -1,6 +1,6 @@
 
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router';
 import toast from 'react-hot-toast';
 
 import {
@@ -13,6 +13,10 @@ import './Navbar.css';
 
 function Navbar({ cartCount }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Identify admin pages.
+  const isAdminPage = location.pathname.startsWith('/admin');
 
   const [currentUser, setCurrentUser] = useState(
     () => getCurrentUser()
@@ -20,6 +24,25 @@ function Navbar({ cartCount }) {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    function updateCurrentUser() {
+      setCurrentUser(getCurrentUser());
+    }
+
+    window.addEventListener(
+      'foodhub-auth-change',
+      updateCurrentUser
+    );
+
+    return () => {
+      window.removeEventListener(
+        'foodhub-auth-change',
+        updateCurrentUser
+      );
+    };
+  }, []);
+
+  // Close the mobile navigation menu.
   function closeMenu() {
     setMenuOpen(false);
   }
@@ -70,14 +93,20 @@ function Navbar({ cartCount }) {
         <button
           type="button"
           className="navbar-toggle"
-          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-label={
+            menuOpen
+              ? 'Close navigation menu'
+              : 'Open navigation menu'
+          }
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? '✕' : '☰'}
         </button>
 
-        <div className={`navbar-menu ${menuOpen ? 'is-open' : ''}`}>
+        <div
+          className={`navbar-menu ${menuOpen ? 'is-open' : ''}`}
+        >
           <ul className="navbar-links">
             <li>
               <Link to="/" onClick={closeMenu}>
@@ -103,39 +132,43 @@ function Navbar({ cartCount }) {
               </Link>
             </li>
 
-            {currentUser ? (
-              <li>
-                <button
-                  type="button"
-                  className="navbar-auth-button"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </li>
-            ) : (
-              <>
+            {!isAdminPage && (
+              currentUser ? (
                 <li>
-                  <Link to="/login" onClick={closeMenu}>
-                    Login
-                  </Link>
+                  <button
+                    type="button"
+                    className="navbar-auth-button"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 </li>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/login" onClick={closeMenu}>
+                      Login
+                    </Link>
+                  </li>
 
-                <li>
-                  <Link to="/register" onClick={closeMenu}>
-                    Register
-                  </Link>
-                </li>
-              </>
+                  <li>
+                    <Link to="/register" onClick={closeMenu}>
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )
             )}
           </ul>
 
-          <div className="navbar-cart">
-            <CartButton
-              cartCount={cartCount}
-              onCartClick={handleCartClick}
-            />
-          </div>
+          {!isAdminPage && (
+            <div className="navbar-cart">
+              <CartButton
+                cartCount={cartCount}
+                onCartClick={handleCartClick}
+              />
+            </div>
+          )}
         </div>
       </div>
     </nav>

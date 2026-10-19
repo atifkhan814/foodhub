@@ -1,5 +1,4 @@
 
-
 const USERS_KEY = 'foodhub_users';
 const CURRENT_USER_KEY = 'foodhub_current_user';
 
@@ -22,9 +21,12 @@ export function saveCurrentUser(user) {
     CURRENT_USER_KEY,
     JSON.stringify(user)
   );
+
+  window.dispatchEvent(new Event('foodhub-auth-change'));
 }
 
 export function clearCurrentUser() {
   localStorage.removeItem(CURRENT_USER_KEY);
-}
 
+  window.dispatchEvent(new Event('foodhub-auth-change'));
+}

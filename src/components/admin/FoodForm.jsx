@@ -186,7 +186,7 @@ function FoodFormFields({
           id="food-price"
           type="number"
           min="0.10"
-          step="0.5"
+          step="any"
           value={price}
           onChange={(event) => setPrice(event.target.value)}
           placeholder="e.g. 12.50"

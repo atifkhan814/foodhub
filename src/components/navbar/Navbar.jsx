@@ -47,6 +47,19 @@ function Navbar({ cartCount }) {
     setMenuOpen(false);
   }
 
+  function handleHomeClick() {
+  closeMenu();
+
+  if (location.pathname !== '/') {
+    navigate('/');
+  } else {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+}
+
   function handleCartClick() {
     closeMenu();
     navigate('/cart');
@@ -109,7 +122,7 @@ function Navbar({ cartCount }) {
         >
           <ul className="navbar-links">
             <li>
-              <Link to="/" onClick={closeMenu}>
+              <Link to="/" onClick={handleHomeClick}>
                 Home
               </Link>
             </li>

@@ -109,7 +109,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto 22px;
   color: #737b73;
   font-size: 13px;
@@ -124,12 +124,12 @@
 .food-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px;
-  max-width: 1200px;
+  gap: 24px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
   align-items: stretch;
 }
-
 /* No results message */
 .menu-empty-state {
   max-width: 620px;

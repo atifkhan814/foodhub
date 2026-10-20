@@ -1,10 +1,11 @@
 .food-card {
-  width: 300px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   background-color: #ffffff;
   border: 1px solid #ead8cd;
   border-radius: 10px;
   overflow: hidden;
-
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 

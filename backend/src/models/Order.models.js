@@ -62,7 +62,7 @@ const orderSchema = new mongoose.Schema(
 
     paymentMethod: {
       type: String,
-      enum: ["Cash on Delivery"],
+      enum: ["Cash on Delivery", "Stripe Demo"],
       default: "Cash on Delivery",
     },
     status: {
@@ -71,9 +71,9 @@ const orderSchema = new mongoose.Schema(
       default: "Pending",
     },
     paymentStatus: {
-      type: String,
-      enum: ["Unpaid", "Paid"],
-      default: "Unpaid",
+     type: String,
+     enum: ["Unpaid", "Paid", "Failed"],
+     default: "Unpaid",
     },
     
 

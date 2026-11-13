@@ -11,9 +11,12 @@ function Cart() {
   const { cart, removeFromCart } = useCart();
 
   const totalPrice = cart.reduce((total, food) => {
-    const price = Number(food.price.replace('$', ''));
-    return total + price;
-  }, 0);
+  const price = Number(
+    food.price?.$numberDecimal ?? food.price
+  );
+
+  return total + (Number.isFinite(price) ? price : 0);
+ }, 0);
 
   return (
     <section className="cart-section">

@@ -2,17 +2,12 @@
 import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 
-import {
-  getUsers,
-  saveCurrentUser,
-} from '../utils/localStorage';
-
 import './Login.css';
 
 function Login() {
   const navigate = useNavigate();
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -20,28 +15,34 @@ function Login() {
     const email = formData.get('email').trim().toLowerCase();
     const password = formData.get('password');
 
-    const users = getUsers();
+    try {
+      const response = await fetch('http://localhost:8000/api/users/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
 
-    const matchedUser = users.find(
-      (user) =>
-        user.email === email &&
-        user.password === password
-    );
+      const data = await response.json();
 
-    if (!matchedUser) {
-      toast.error('Invalid email or password. Please try again.');
-      return;
+      if (!response.ok) {
+        toast.error(data.message || 'Invalid email or password. Please try again.');
+        return;
+      }
+
+      toast.success('Login successful! Welcome to FoodHub.');
+
+      navigate('/');
+
+    } catch (error) {
+      console.error('Login error:', error);
+      toast.error('Unable to connect to the server. Please try again.');
     }
-
-    saveCurrentUser({
-      id: matchedUser.id,
-      name: matchedUser.name,
-      email: matchedUser.email,
-    });
-
-    toast.success('Login successful! Welcome to FoodHub.');
-
-    navigate('/');
   }
 
   return (

@@ -3,12 +3,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router';
 import toast from 'react-hot-toast';
 
-import {
-  getCurrentUser,
-  clearCurrentUser,
-} from '../../utils/localStorage';
-
 import CartButton from './CartButton';
+import MyOrders from '../MyOrders/MyOrders';
 import './Navbar.css';
 
 function Navbar({ cartCount }) {
@@ -18,16 +14,36 @@ function Navbar({ cartCount }) {
   // Identify admin pages.
   const isAdminPage = location.pathname.startsWith('/admin');
 
-  const [currentUser, setCurrentUser] = useState(
-    () => getCurrentUser()
-  );
-
+  const [currentUser, setCurrentUser] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showMyOrders, setShowMyOrders] = useState(false);
 
+  // Check the user's login session.
   useEffect(() => {
-    function updateCurrentUser() {
-      setCurrentUser(getCurrentUser());
+    async function updateCurrentUser() {
+      try {
+        const response = await fetch(
+          'http://localhost:8000/api/users/me',
+          {
+            method: 'GET',
+            credentials: 'include',
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentUser(data.user);
+        } else {
+          setCurrentUser(null);
+          setShowMyOrders(false);
+        }
+      } catch (error) {
+        console.error('Session check failed:', error);
+        setCurrentUser(null);
+      }
     }
+
+    updateCurrentUser();
 
     window.addEventListener(
       'foodhub-auth-change',
@@ -40,47 +56,63 @@ function Navbar({ cartCount }) {
         updateCurrentUser
       );
     };
-  }, []);
+  }, [location.pathname]);
 
   // Close the mobile navigation menu.
   function closeMenu() {
     setMenuOpen(false);
   }
 
-  function handleHomeClick() {
-  closeMenu();
-
-  if (location.pathname !== '/') {
-    navigate('/');
-  } else {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }
-}
-
+  // Navigate to cart.
   function handleCartClick() {
     closeMenu();
     navigate('/cart');
   }
 
-  function handleLogout() {
-    clearCurrentUser();
-    setCurrentUser(null);
+  // Open My Orders drawer.
+  function handleMyOrdersClick() {
     closeMenu();
-
-    toast.success('You have logged out successfully!');
-    navigate('/');
+    setShowMyOrders(true);
   }
 
+  // Logout customer.
+  async function handleLogout() {
+    try {
+      const response = await fetch(
+        'http://localhost:8000/api/users/logout',
+        {
+          method: 'POST',
+          credentials: 'include',
+        }
+      );
+
+      if (!response.ok) {
+        toast.error('Logout failed. Please try again.');
+        return;
+      }
+
+      setCurrentUser(null);
+      setShowMyOrders(false);
+
+      window.dispatchEvent(new Event('foodhub-auth-change'));
+
+      closeMenu();
+
+      toast.success('You have logged out successfully!');
+      navigate('/');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      toast.error('Something went wrong during logout.');
+    }
+  }
+
+  // Keep the existing admin Menu navigation.
   function handleMenuClick(event) {
     event.preventDefault();
     closeMenu();
 
     navigate('/');
 
-    // Wait for the homepage to render before scrolling.
     window.setTimeout(() => {
       document.getElementById('menu')?.scrollIntoView({
         behavior: 'smooth',
@@ -90,101 +122,134 @@ function Navbar({ cartCount }) {
   }
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <Link
-          to="/"
-          className="navbar-logo"
-          onClick={closeMenu}
-        >
-          <span className="logo-icon">🍽️</span>
-          <span>
-            Food<span className="logo-highlight">Hub</span>
-          </span>
-        </Link>
+    <>
+      <nav className="navbar">
+        <div className="navbar-container">
 
-        <button
-          type="button"
-          className="navbar-toggle"
-          aria-label={
-            menuOpen
-              ? 'Close navigation menu'
-              : 'Open navigation menu'
-          }
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? '✕' : '☰'}
-        </button>
+          {/* FoodHub Brand */}
+          <Link
+            to="/"
+            className="navbar-logo"
+            onClick={closeMenu}
+          >
+            <span className="logo-icon">🍽️</span>
+            <span>
+              Food<span className="logo-highlight">Hub</span>
+            </span>
+          </Link>
 
-        <div
-          className={`navbar-menu ${menuOpen ? 'is-open' : ''}`}
-        >
-          <ul className="navbar-links">
-            <li>
-              <Link to="/" onClick={handleHomeClick}>
-                Home
-              </Link>
-            </li>
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            className="navbar-toggle"
+            aria-label={
+              menuOpen
+                ? 'Close navigation menu'
+                : 'Open navigation menu'
+            }
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
 
-            <li>
-              <Link to="/#menu" onClick={handleMenuClick}>
-                Menu
-              </Link>
-            </li>
+          <div
+            className={`navbar-menu ${menuOpen ? 'is-open' : ''}`}
+          >
+            <ul className="navbar-links">
 
-            <li>
-              <Link to="/about" onClick={closeMenu}>
-                About
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/contact" onClick={closeMenu}>
-                Contact
-              </Link>
-            </li>
-
-            {!isAdminPage && (
-              currentUser ? (
-                <li>
-                  <button
-                    type="button"
-                    className="navbar-auth-button"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
-                </li>
-              ) : (
+              {/* Admin Navigation */}
+              {isAdminPage && (
                 <>
                   <li>
-                    <Link to="/login" onClick={closeMenu}>
-                      Login
+                    <Link to="/" onClick={closeMenu}>
+                      Home
                     </Link>
                   </li>
 
                   <li>
-                    <Link to="/register" onClick={closeMenu}>
-                      Register
+                    <Link to="/#menu" onClick={handleMenuClick}>
+                      Menu
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/about" onClick={closeMenu}>
+                      About
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/contact" onClick={closeMenu}>
+                      Contact
                     </Link>
                   </li>
                 </>
-              )
-            )}
-          </ul>
+              )}
 
-          {!isAdminPage && (
-            <div className="navbar-cart">
-              <CartButton
-                cartCount={cartCount}
-                onCartClick={handleCartClick}
-              />
-            </div>
-          )}
+              {/* Customer Authentication */}
+              {!isAdminPage && (
+                currentUser ? (
+                  <>
+                    <li>
+                      <button
+                        type="button"
+                        className="navbar-orders-button"
+                        onClick={handleMyOrdersClick}
+                      >
+                        My Orders
+                      </button>
+                    </li>
+
+                    <li>
+                      <button
+                        type="button"
+                        className="navbar-auth-button"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link to="/login" onClick={closeMenu}>
+                        Login
+                      </Link>
+                    </li>
+
+                    <li>
+                      <Link to="/register" onClick={closeMenu}>
+                        Register
+                      </Link>
+                    </li>
+                  </>
+                )
+              )}
+            </ul>
+
+            {/* Customer Cart */}
+            {!isAdminPage && (
+              <div className="navbar-cart">
+                <CartButton
+                  cartCount={cartCount}
+                  onCartClick={handleCartClick}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* My Orders Drawer */}
+      {!isAdminPage && currentUser && (
+        <MyOrders
+          isOpen={showMyOrders}
+          onClose={() => setShowMyOrders(false)}
+        />
+      )}
+    </>
   );
 }
 

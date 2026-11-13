@@ -53,10 +53,16 @@ export const createOrder = async (req, res) => {
       });
     }
 
-    if (
-      paymentMethod &&
-      paymentMethod !== "Cash on Delivery"
-    ) {
+    // Validate the selected payment method
+    const allowedPaymentMethods = [
+      "Cash on Delivery",
+      "Stripe Demo",
+    ];
+
+    const selectedPaymentMethod =
+      paymentMethod || "Cash on Delivery";
+
+    if (!allowedPaymentMethods.includes(selectedPaymentMethod)) {
       return res.status(400).json({
         success: false,
         message: "Invalid payment method.",
@@ -65,6 +71,7 @@ export const createOrder = async (req, res) => {
 
     // Get the actual food prices from MongoDB
     const foodIds = items.map((item) => item.foodId);
+
     const foods = await Food.find({
       _id: { $in: foodIds },
     });
@@ -106,8 +113,10 @@ export const createOrder = async (req, res) => {
 
     // Save the order in MongoDB
     const order = await Order.create({
-       userId: req.session.userId,
+      userId: req.session.userId,
+
       orderNumber: `FH-${Date.now()}`,
+
       customer: {
         fullName: customer.fullName.trim(),
         phone: customer.phone.trim(),
@@ -119,9 +128,15 @@ export const createOrder = async (req, res) => {
             ? customer.notes.trim()
             : "",
       },
+
       items: orderItems,
       total,
-      paymentMethod: "Cash on Delivery",
+
+      // Save the selected payment method
+      paymentMethod: selectedPaymentMethod,
+
+      // Payment starts as unpaid
+      paymentStatus: "Unpaid",
     });
 
     return res.status(201).json({
@@ -129,6 +144,7 @@ export const createOrder = async (req, res) => {
       message: "Order placed successfully!",
       data: order,
     });
+
   } catch (error) {
     console.error("Create order error:", error);
 
@@ -138,24 +154,32 @@ export const createOrder = async (req, res) => {
     });
   }
 };
-// Get orders of the logged-in customer
-export const  getCustmorOrders = async (req , res)=>{
 
-  try{
-      const orders= await Order.find({ userId: req.session.userId }).sort({ createdAt: -1 });
-      return res.status(200).json({
-        success: true,
-        data: orders,
-      });
-    } catch (error) {
-      console.error("Get customer orders error:", error);
-      return res.status(500).json({
-        success: false,
-        message: "Unable to fetch your orders.",
-      });
-    }
+
+// Get orders of the logged-in customer
+export const getCustmorOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({
+      userId: req.session.userId,
+    }).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      data: orders,
+    });
+
+  } catch (error) {
+    console.error("Get customer orders error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to fetch your orders.",
+    });
+  }
 };
-    
+
+
+// Get all orders (Admin)
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find()
@@ -166,6 +190,7 @@ export const getAllOrders = async (req, res) => {
       success: true,
       data: orders,
     });
+
   } catch (error) {
     console.error("Get all orders error:", error);
 
@@ -176,6 +201,8 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
+
+// Update order status (Admin)
 export const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -188,20 +215,20 @@ export const updateOrderStatus = async (req, res) => {
       "Preparing",
       "Dispatched",
       "Delivered",
-      "Cancelled"
+      "Cancelled",
     ];
 
     if (!allowedStatuses.includes(status)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid order status."
+        message: "Invalid order status.",
       });
     }
 
     // Find the order and update its status
     const updatedOrder = await Order.findByIdAndUpdate(
       id,
-      { $set: { status: status } },
+      { $set: { status } },
       { new: true, runValidators: true }
     );
 
@@ -209,14 +236,14 @@ export const updateOrderStatus = async (req, res) => {
     if (!updatedOrder) {
       return res.status(404).json({
         success: false,
-        message: "Order not found."
+        message: "Order not found.",
       });
     }
 
     return res.status(200).json({
       success: true,
       message: "Order status updated successfully.",
-      data: updatedOrder
+      data: updatedOrder,
     });
 
   } catch (error) {
@@ -224,8 +251,7 @@ export const updateOrderStatus = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: "Unable to update order status."
+      message: "Unable to update order status.",
     });
   }
 };
-

@@ -1,12 +1,12 @@
-
-/* =========================
-   Base Layout
-========================= */
+/* =========================================
+   FOODHUB ADMIN DASHBOARD
+   Professional Dashboard Design
+========================================= */
 
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: #f4f7f4;
+  background: #f5f7f5;
   color: #26382d;
   font-family: Arial, sans-serif;
 }
@@ -18,13 +18,22 @@
 }
 
 .admin-layout button,
-.admin-layout input {
+.admin-layout input,
+.admin-layout select {
   font: inherit;
 }
 
-/* =========================
-   Sidebar
-========================= */
+.admin-layout button:focus-visible,
+.admin-layout a:focus-visible,
+.admin-layout input:focus-visible,
+.admin-layout select:focus-visible {
+  outline: 2px solid #6da77b;
+  outline-offset: 3px;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
 
 .admin-sidebar {
   position: sticky;
@@ -34,7 +43,7 @@
   flex-shrink: 0;
   width: 250px;
   height: 100vh;
-  padding: 26px 18px 20px;
+  padding: 28px 18px 20px;
   overflow-y: auto;
   background: #173e2d;
   color: #ffffff;
@@ -44,10 +53,11 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  margin: 0 0 38px;
+  margin: 0 0 42px;
   padding: 0 4px;
   color: #ffffff;
   font-size: 25px;
+  font-weight: 700;
   letter-spacing: -0.6px;
 }
 
@@ -56,15 +66,15 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 42px;
-  height: 42px;
+  width: 43px;
+  height: 43px;
   color: #ffffff;
   background: #28784d;
-  border-radius: 7px;
+  border-radius: 8px;
 }
 
 .brand-highlight {
-  color: #8ed0a0;
+  color: #91d5a4;
 }
 
 .sidebar-label {
@@ -76,6 +86,8 @@
   letter-spacing: 1.5px;
 }
 
+/* Navigation */
+
 .sidebar-navigation {
   display: flex;
   flex-direction: column;
@@ -86,18 +98,17 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  min-height: 46px;
-  padding: 0 12px;
+  min-height: 47px;
+  padding: 0 13px;
   color: #d9e7dc;
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
   border-radius: 6px;
-  transition: background-color 0.2s, color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .sidebar-link svg {
-  display: block;
   flex-shrink: 0;
 }
 
@@ -111,11 +122,11 @@
   font-weight: 700;
 }
 
-/* Sidebar note */
+/* Sidebar information */
 
 .sidebar-note {
-  margin-top: 30px;
-  padding: 17px 13px;
+  margin-top: 32px;
+  padding: 18px 14px;
   color: #dcebe0;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -123,8 +134,7 @@
 }
 
 .sidebar-note > svg {
-  display: block;
-  color: #8ed0a0;
+  color: #91d5a4;
 }
 
 .sidebar-note p {
@@ -135,13 +145,12 @@
 }
 
 .sidebar-note span {
-  display: block;
   color: #b9cfc0;
   font-size: 12px;
   line-height: 1.6;
 }
 
-/* Admin account stays near the bottom */
+/* Admin account */
 
 .sidebar-account {
   display: flex;
@@ -149,7 +158,7 @@
   gap: 11px;
   min-width: 0;
   margin-top: auto;
-  padding: 19px 0 14px;
+  padding: 20px 0 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -158,8 +167,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 41px;
+  height: 41px;
   color: #ffffff;
   background: #28784d;
   border-radius: 50%;
@@ -181,15 +190,15 @@
 
 .admin-account-email {
   display: block;
-  overflow: hidden;
   max-width: 155px;
+  overflow: hidden;
   color: #ffffff;
   font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Logout button */
+/* Logout */
 
 .admin-logout-button {
   display: flex;
@@ -197,7 +206,7 @@
   justify-content: center;
   gap: 10px;
   width: 100%;
-  min-height: 44px;
+  min-height: 45px;
   padding: 11px 14px;
   color: #ffffff;
   background: #a93636;
@@ -206,26 +215,21 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.admin-logout-button svg {
-  display: block;
-  flex-shrink: 0;
+  transition: background-color 0.2s ease;
 }
 
 .admin-logout-button:hover {
   background: #892b2b;
 }
 
-/* =========================
-   Main Content and Header
-========================= */
+/* =========================================
+   MAIN CONTENT
+========================================= */
 
 .admin-main {
   flex: 1;
   min-width: 0;
-  padding: 28px 32px;
+  padding: 32px;
 }
 
 .admin-topbar {
@@ -233,7 +237,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .admin-page-heading {
@@ -241,7 +245,7 @@
 }
 
 .admin-eyebrow {
-  margin: 0 0 7px;
+  margin: 0 0 8px;
   color: #28784d;
   font-size: 10px;
   font-weight: 700;
@@ -251,7 +255,7 @@
 .admin-topbar h1 {
   margin: 0;
   color: #183f30;
-  font-size: clamp(23px, 2.2vw, 30px);
+  font-size: clamp(25px, 2.2vw, 32px);
   line-height: 1.3;
 }
 
@@ -260,9 +264,10 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  padding: 10px 13px;
+  padding: 10px 14px;
   color: #28784d;
   background: #e7f3e9;
+  border: 1px solid #d5e9d9;
   border-radius: 5px;
   font-size: 12px;
   font-weight: 700;
@@ -276,13 +281,13 @@
   border-radius: 50%;
 }
 
-/* =========================
-   Welcome Section
-========================= */
+/* =========================================
+   WELCOME SECTION
+========================================= */
 
 .admin-welcome {
-  margin-bottom: 24px;
-  padding: 24px;
+  margin-bottom: 25px;
+  padding: 26px;
   background: #ffffff;
   border: 1px solid #e0e9e2;
   border-left: 4px solid #28784d;
@@ -293,14 +298,13 @@
   display: flex;
   align-items: center;
   gap: 11px;
-  margin: 0 0 9px;
+  margin: 0 0 10px;
   color: #183f30;
   font-size: 23px;
   line-height: 1.4;
 }
 
 .admin-welcome-title svg {
-  display: block;
   flex-shrink: 0;
   color: #28784d;
 }
@@ -312,26 +316,32 @@
   line-height: 1.7;
 }
 
-/* =========================
-   Statistics Cards
-========================= */
+/* =========================================
+   DASHBOARD STATISTICS
+========================================= */
 
 .admin-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .stat-card {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 15px;
   min-width: 0;
-  padding: 20px;
+  padding: 21px;
   background: #ffffff;
   border: 1px solid #e0e9e2;
   border-radius: 7px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.stat-card:hover {
+  border-color: #b8d0bd;
+  transform: translateY(-2px);
 }
 
 .stat-icon {
@@ -339,15 +349,11 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 46px;
-  height: 46px;
+  width: 47px;
+  height: 47px;
   color: #28784d;
   background: #eaf5ed;
   border-radius: 7px;
-}
-
-.stat-icon svg {
-  display: block;
 }
 
 .stat-details {
@@ -365,7 +371,7 @@
 
 .stat-details strong {
   color: #183f30;
-  font-size: 24px;
+  font-size: 25px;
   line-height: 1.2;
 }
 
@@ -374,16 +380,16 @@
   font-size: 19px;
 }
 
-/* =========================
-   Food Form and Specials
-========================= */
+/* =========================================
+   FOOD FORM AND SPECIALS
+========================================= */
 
 .admin-content-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
   align-items: stretch;
   gap: 22px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .admin-form-panel,
@@ -396,16 +402,16 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 24px;
+  padding: 25px;
   background: #ffffff;
-  border: 1px solid #dce8df;
+  border: 1px solid #e0e9e2;
   border-top: 4px solid #28784d;
-  border-radius: 8px;
+  border-radius: 7px;
 }
 
 .specials-label {
   display: inline-block;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
   color: #28784d;
   font-size: 10px;
   font-weight: 700;
@@ -426,14 +432,18 @@
   line-height: 1.6;
 }
 
+/* Image fills the available height beside the food form */
+
 .restaurant-specials-image {
   display: block;
+  flex: 1;
   width: 100%;
-  height: 360px;
+  height: 100%;
+  min-height: 340px;
   object-fit: cover;
   object-position: center;
-  border-radius: 6px;
   background: #f1f4f1;
+  border-radius: 6px;
 }
 
 .specials-footer {
@@ -462,15 +472,23 @@
   width: 100%;
 }
 
-/* Prevent images from overflowing dashboard */
+/* Orders section navigation */
+
+#admin-orders {
+  scroll-margin-top: 25px;
+}
+
+/* =========================================
+   GENERAL IMAGE HANDLING
+========================================= */
 
 .admin-main img {
   max-width: 100%;
 }
 
-/* =========================
-   Tablet
-========================= */
+/* =========================================
+   TABLET RESPONSIVE DESIGN
+========================================= */
 
 @media (max-width: 1100px) {
   .admin-sidebar {
@@ -478,7 +496,7 @@
   }
 
   .admin-main {
-    padding: 24px;
+    padding: 25px;
   }
 
   .admin-content-grid {
@@ -486,7 +504,9 @@
   }
 
   .restaurant-specials-image {
+    flex: none;
     height: 320px;
+    min-height: 320px;
   }
 
   .admin-stats {
@@ -494,14 +514,14 @@
   }
 
   .stat-card {
-    gap: 10px;
-    padding: 15px;
+    gap: 11px;
+    padding: 16px;
   }
 }
 
-/* =========================
-   Mobile
-========================= */
+/* =========================================
+   MOBILE RESPONSIVE DESIGN
+========================================= */
 
 @media (max-width: 700px) {
   .admin-layout {
@@ -513,33 +533,29 @@
     width: 100%;
     height: auto;
     min-height: 0;
-    padding: 18px 16px;
+    padding: 19px 16px;
     overflow: visible;
   }
 
   .admin-brand {
-    margin-bottom: 22px;
+    margin-bottom: 23px;
     font-size: 23px;
   }
 
   .sidebar-label {
-    margin-bottom: 9px;
+    margin-bottom: 10px;
   }
 
   .sidebar-navigation {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 7px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .sidebar-link {
-    flex-direction: column;
-    justify-content: center;
-    gap: 6px;
-    min-height: 68px;
-    padding: 10px 4px;
-    text-align: center;
-    font-size: 11px;
+    min-height: 46px;
+    padding: 0 11px;
+    font-size: 12px;
   }
 
   .sidebar-note {
@@ -555,35 +571,26 @@
     max-width: calc(100vw - 105px);
   }
 
-  .admin-logout-button {
-    min-height: 44px;
-  }
-
   .admin-main {
-    padding: 22px 16px;
+    padding: 23px 16px;
   }
 
   .admin-topbar {
     align-items: flex-start;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 13px;
+    margin-bottom: 21px;
   }
 
   .admin-topbar h1 {
-    font-size: 24px;
-  }
-
-  .admin-status {
-    padding: 8px 10px;
+    font-size: 25px;
   }
 
   .admin-welcome {
-    padding: 19px;
+    padding: 20px;
   }
 
   .admin-welcome-title {
-    gap: 9px;
     font-size: 20px;
   }
 
@@ -593,7 +600,7 @@
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 17px;
   }
 
   .admin-content-grid {
@@ -602,17 +609,19 @@
   }
 
   .admin-specials-panel {
-    padding: 18px;
+    padding: 19px;
   }
 
   .restaurant-specials-image {
+    flex: none;
     height: 260px;
+    min-height: 260px;
   }
 }
 
-/* =========================
-   Small Phones
-========================= */
+/* =========================================
+   SMALL PHONES
+========================================= */
 
 @media (max-width: 380px) {
   .admin-main {
@@ -624,7 +633,9 @@
   }
 
   .sidebar-link {
-    font-size: 10px;
+    gap: 8px;
+    padding: 0 8px;
+    font-size: 11px;
   }
 
   .admin-brand {
@@ -637,5 +648,20 @@
 
   .restaurant-specials-image {
     height: 210px;
+    min-height: 210px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-layout *,
+  .admin-layout *::before,
+  .admin-layout *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }

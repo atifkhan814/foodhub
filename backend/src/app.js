@@ -5,6 +5,8 @@ import foodRoutes from "./routes/food.routes.js";
 import orderRoutes from "./routes/order.routes.js";
 import userRoutes from "./routes/user.routes.js";
 
+import paymentRoutes from "./routes/payment.routes.js";
+
 import sessionMiddleware from "./middlewares/session.middleware.js";
 
 const app = express();
@@ -27,6 +29,7 @@ app.use(sessionMiddleware);
 app.use("/api/foods", foodRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/payments", paymentRoutes)
 
 
 

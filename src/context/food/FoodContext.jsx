@@ -2,72 +2,152 @@
 import { useEffect, useState } from 'react';
 import { FoodContext } from './FoodContextObject';
 
-const initialFoods = [
-  {
-    id: 1,
-    name: 'Margherita Pizza',
-    description: 'Fresh tomato, mozzarella cheese, and basil.',
-    price: '$12',
-    image: '/food-images/pizza.jpg',
-    category: 'Pizza',
-  },
-  {
-    id: 2,
-    name: 'Classic Burger',
-    description: 'Juicy beef patty with cheese and fresh vegetables.',
-    price: '$10',
-    image: '/food-images/burger.jpg',
-    category: 'Burgers',
-  },
-  {
-    id: 3,
-    name: 'Grilled Chicken',
-    description: 'Tender grilled chicken with herbs and vegetables.',
-    price: '$15',
-    image: '/food-images/grilled-chicken.jpg',
-    category: 'Chicken',
-  },
-];
+const API_URL = 'http://localhost:8000/api/foods';
+
+// Convert backend food data into the format used by React components.
+function formatFood(food) {
+  return {
+    ...food,
+    id: food._id || food.id,
+    price: `$${food.price}`,
+  };
+}
+
+// Convert food details into FormData for Multer.
+function createFoodFormData(food) {
+  const formData = new FormData();
+
+  formData.append('name', food.name);
+  formData.append('description', food.description);
+  formData.append(
+    'price',
+    Number(String(food.price).replace('$', ''))
+  );
+  formData.append('category', food.category);
+
+  // Send the actual image file only when a new image is selected.
+  if (food.imageFile) {
+    formData.append('image', food.imageFile);
+  }
+
+  return formData;
+}
 
 export function FoodProvider({ children }) {
-  const [foods, setFoods] = useState(() => {
-    const savedFoods = localStorage.getItem('foodhub_foods');
+  const [foods, setFoods] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    return savedFoods === null
-      ? initialFoods
-      : JSON.parse(savedFoods);
-  });
-
+  // Load food items from MongoDB when the app starts.
   useEffect(() => {
-    localStorage.setItem('foodhub_foods', JSON.stringify(foods));
-  }, [foods]);
+    async function fetchFoods() {
+      try {
+        const response = await fetch(API_URL);
+        const result = await response.json();
 
-  function addFood(food) {
-    const newFood = {
-      ...food,
-      id: Date.now(),
-    };
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || 'Failed to load foods');
+        }
 
-    setFoods((previousFoods) => [...previousFoods, newFood]);
+        setFoods(result.data.map(formatFood));
+      } catch (error) {
+        console.error('Error loading foods:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchFoods();
+  }, []);
+
+  // Add a new food item to MongoDB.
+  async function addFood(food) {
+    try {
+      const formData = createFoodFormData(food);
+
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Failed to add food');
+      }
+
+      setFoods((previousFoods) => [
+        ...previousFoods,
+        formatFood(result.data),
+      ]);
+
+      return result.data;
+    } catch (error) {
+      console.error('Error adding food:', error);
+      throw error;
+    }
   }
 
-  function updateFood(updatedFood) {
-    setFoods((previousFoods) =>
-      previousFoods.map((food) =>
-        food.id === updatedFood.id ? updatedFood : food
-      )
-    );
+  // Update an existing food item in MongoDB.
+  async function updateFood(food) {
+    try {
+      const formData = createFoodFormData(food);
+
+      const response = await fetch(`${API_URL}/${food.id}`, {
+        method: 'PUT',
+        credentials: 'include',
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Failed to update food');
+      }
+
+      const updatedFood = formatFood(result.data);
+
+      setFoods((previousFoods) =>
+        previousFoods.map((item) =>
+          item.id === updatedFood.id ? updatedFood : item
+        )
+      );
+
+      return result.data;
+    } catch (error) {
+      console.error('Error updating food:', error);
+      throw error;
+    }
   }
 
-  function deleteFood(id) {
-    setFoods((previousFoods) =>
-      previousFoods.filter((food) => food.id !== id)
-    );
+  // Delete a food item from MongoDB.
+  async function deleteFood(id) {
+    try {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || 'Failed to delete food');
+      }
+
+      setFoods((previousFoods) =>
+        previousFoods.filter((food) => food.id !== id)
+      );
+
+      return result.data;
+    } catch (error) {
+      console.error('Error deleting food:', error);
+      throw error;
+    }
   }
 
   return (
     <FoodContext.Provider
-      value={{ foods, addFood, updateFood, deleteFood }}
+      value={{ foods, loading, addFood, updateFood, deleteFood }}
     >
       {children}
     </FoodContext.Provider>

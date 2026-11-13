@@ -7,24 +7,46 @@ function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  function handleLogin(event) {
+  async function handleLogin(event) {
     event.preventDefault();
 
-    if (
-      email === 'admin@foodhub.com' &&
-      password === 'Admin123!'
-    ) {
-      localStorage.setItem(
-        'foodhub_admin_logged_in',
-        'true'
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        'http://localhost:8000/api/users/admin-login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
       );
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || 'Invalid admin email or password.');
+        return;
+      }
+
       navigate('/admin');
-    } else {
-      setError('Invalid admin email or password.');
+
+    } catch (error) {
+      console.error('Admin login error:', error);
+      setError('Unable to connect to the server. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -76,8 +98,8 @@ function AdminLogin() {
           </p>
         )}
 
-        <button type="submit">
-          Login as Admin
+        <button type="submit" disabled={loading}>
+          {loading ? 'Logging in...' : 'Login as Admin'}
         </button>
       </form>
     </main>

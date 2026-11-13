@@ -1,51 +1,53 @@
 import { useNavigate } from 'react-router';
-import { getUsers, saveUsers } from '../utils/localStorage';
 import './Register.css';
 
 function Register() {
   const navigate = useNavigate();
 
-  
-function handleRegister(event) {
-  event.preventDefault();
+  async function handleRegister(event) {
+    event.preventDefault();
 
-  const formData = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
 
-  const name = formData.get('fullName').trim();
-  const email = formData.get('email').trim().toLowerCase();
-  const password = formData.get('password');
-  const confirmPassword = formData.get('confirmPassword');
+    const name = formData.get('fullName').trim();
+    const email = formData.get('email').trim().toLowerCase();
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirmPassword');
 
-  if (password !== confirmPassword) {
-    alert('Passwords do not match.');
-    return;
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/api/users/register', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || 'Registration failed. Please try again.');
+        return;
+      }
+
+      alert('Registration successful! Please log in.');
+      navigate('/login');
+
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Unable to connect to the server. Please try again.');
+    }
   }
-
-  const users = getUsers();
-
-  const userExists = users.some(
-    (user) => user.email === email
-  );
-
-  if (userExists) {
-    alert('This email is already registered. Please log in.');
-    return;
-  }
-
-  const newUser = {
-    id: Date.now(),
-    name,
-    email,
-    // Demo only: do not store real passwords in localStorage.
-    password,
-  };
-
-  saveUsers([...users, newUser]);
-
-  alert('Registration successful! Please log in.');
-  navigate('/login');
-}
-
 
   return (
     <div className="register-page">

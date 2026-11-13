@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useFood } from '../context/food/useFood';
 import FoodForm from '../components/admin/FoodForm';
 import FoodList from '../components/admin/FoodList';
+import AdminOrders from '../components/admin/AdminOrders';
+
 import './AdminPage.css';
 import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
@@ -47,12 +49,25 @@ function AdminPage() {
   }
 
   // Add a new food item or update an existing one.
-  function handleSave(food) {
-    if (editingFood) {
-      updateFood(food);
-      setEditingFood(null);
-    } else {
-      addFood(food);
+  async function handleSave(food) {
+    try {
+      if (editingFood) {
+        await updateFood(food);
+
+        setEditingFood(null);
+
+        toast.success('Food updated successfully');
+      } else {
+        await addFood(food);
+
+        toast.success('Food added successfully');
+      }
+    } catch (error) {
+      console.error('Error saving food:', error);
+
+      toast.error(error.message || 'Something went wrong');
+
+      throw error;
     }
   }
 
@@ -61,7 +76,7 @@ function AdminPage() {
     setEditingFood(food);
 
     window.scrollTo({
-      top : 0,
+      top: 0,
       behavior: 'smooth',
     });
   }
@@ -110,6 +125,11 @@ function AdminPage() {
             <ClipboardList size={19} />
             <span>Manage Menu</span>
           </a>
+
+          <a className="sidebar-link" href="#admin-orders">
+            <Package size={19} />
+            <span>Manage Orders</span>
+          </a>
         </nav>
 
         <div className="sidebar-note">
@@ -153,6 +173,7 @@ function AdminPage() {
             <p className="admin-eyebrow">
               RESTAURANT MANAGEMENT
             </p>
+
             <h1>Admin Dashboard</h1>
           </div>
 
@@ -248,6 +269,9 @@ function AdminPage() {
             onDelete={handleDelete}
           />
         </section>
+
+        {/* Admin Orders Section */}
+        <AdminOrders />
       </main>
     </div>
   );

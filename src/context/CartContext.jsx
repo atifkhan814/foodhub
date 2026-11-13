@@ -6,6 +6,25 @@ import { CartContext } from './CartContextObject';
 
 const CART_KEY = 'foodhub_cart';
 
+// Convert a food object into a consistent cart item
+function prepareFood(food) {
+  const rawPrice =
+    food.price ??
+    food.foodPrice ??
+    food.product?.price;
+
+  const price =
+    typeof rawPrice === "string"
+      ? Number(rawPrice.replace(/[$,\s]/g, ""))
+      : Number(rawPrice?.$numberDecimal ?? rawPrice);
+
+  return {
+    ...food,
+    id: food._id || food.id,
+    price,
+  };
+}
+
 export function CartProvider({ children }) {
   const [cart, setCart] = useState(() => {
     try {
@@ -23,28 +42,43 @@ export function CartProvider({ children }) {
     try {
       localStorage.setItem(CART_KEY, JSON.stringify(cart));
     } catch (error) {
-      console.error(
-        'Unable to save cart to localStorage:',
-        error
-      );
+      console.error('Unable to save cart:', error);
     }
   }, [cart]);
 
   // Add food to cart
-  function addToCart(food) {
-    const currentUser = localStorage.getItem(
-      'foodhub_current_user'
-    );
+  async function addToCart(food) {
+    try {
+      const response = await fetch(
+        'http://localhost:8000/api/users/me',
+        {
+          method: 'GET',
+          credentials: 'include',
+        }
+      );
 
-    if (!currentUser) {
-      toast.error('Please log in before adding food to your cart.');
-      navigate('/login');
-      return;
+      if (!response.ok) {
+        toast.error('Please log in before adding food to your cart.');
+        navigate('/login');
+        return;
+      }
+
+      const cartFood = prepareFood(food);
+
+      if (!Number.isFinite(cartFood.price) || cartFood.price < 0) {
+        toast.error('This food has an invalid price. Please refresh the menu.');
+        console.error('Invalid food price:', food);
+        return;
+      }
+
+      setCart((previousCart) => [...previousCart, cartFood]);
+
+      toast.success(`${cartFood.name} added to cart!`);
+
+    } catch (error) {
+      console.error('Authentication check failed:', error);
+      toast.error('Unable to verify your login. Please try again.');
     }
-
-    setCart((previousCart) => [...previousCart, food]);
-
-    toast.success(`${food.name} added to cart!`);
   }
 
   // Remove one food item from cart
@@ -67,6 +101,7 @@ export function CartProvider({ children }) {
   // Clear the entire cart after successful checkout
   function clearCart() {
     setCart([]);
+    localStorage.removeItem(CART_KEY);
   }
 
   return (

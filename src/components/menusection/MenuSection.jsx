@@ -5,6 +5,8 @@ import { useFood } from '../../context/food/useFood';
 
 function MenuSection({ selectedCategory, onAddToCart }) {
   const { foods } = useFood();
+
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredFoods = foods.filter((food) => {

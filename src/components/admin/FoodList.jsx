@@ -1,6 +1,15 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import {
+  Search,
+  SlidersHorizontal,
+  Pencil,
+  Trash2,
+  UtensilsCrossed,
+  RotateCcw,
+} from 'lucide-react';
+
 import './FoodList.css';
 
 function FoodList({ foods, onEdit, onDelete }) {
@@ -9,18 +18,16 @@ function FoodList({ foods, onEdit, onDelete }) {
 
   const categories = [
     'All',
-    ...new Set(
-      foods.map((food) => food.category).filter(Boolean)
-    ),
+    ...new Set(foods.map((food) => food.category).filter(Boolean)),
   ];
 
-  // Search by name or description and filter by category.
+  // Search and filter food items.
   const filteredFoods = foods.filter((food) => {
     const search = searchTerm.toLowerCase().trim();
 
     const matchesSearch =
-      food.name.toLowerCase().includes(search) ||
-      food.description.toLowerCase().includes(search);
+      (food.name || '').toLowerCase().includes(search) ||
+      (food.description || '').toLowerCase().includes(search);
 
     const matchesCategory =
       selectedCategory === 'All' ||
@@ -29,18 +36,27 @@ function FoodList({ foods, onEdit, onDelete }) {
     return matchesSearch && matchesCategory;
   });
 
- 
- // Handle Edit.
-function handleEdit(food) {
-  if (typeof onEdit !== 'function') {
-    toast.error('Edit function is not connected.');
-    return;
+  // Convert price into a number safely.
+  function formatPrice(price) {
+    const numericPrice = Number(
+      String(price ?? '').replace(/[^0-9.-]/g, '')
+    );
+
+    return Number.isFinite(numericPrice)
+      ? `$${numericPrice.toFixed(2)}`
+      : 'Price unavailable';
   }
 
-  onEdit(food);
+  // Handle Edit.
+  function handleEdit(food) {
+    if (typeof onEdit !== 'function') {
+      toast.error('Edit function is not connected.');
+      return;
+    }
 
-  toast.success(`${food.name} selected for editing`);
-}
+    onEdit(food);
+    toast.success(`${food.name} selected for editing`);
+  }
 
   // Handle Delete.
   function handleDelete(food) {
@@ -53,6 +69,7 @@ function handleEdit(food) {
     toast.success(`${food.name} deleted successfully`);
   }
 
+  // Clear filters.
   function clearFilters() {
     setSearchTerm('');
     setSelectedCategory('All');
@@ -60,38 +77,47 @@ function handleEdit(food) {
 
   return (
     <section className="admin-food-list">
+
       <div className="food-list-header">
-        <div>
-          <span className="food-list-label">
-            MENU MANAGEMENT
-          </span>
+        <div className="food-list-heading">
+          <span className="food-list-label">MENU MANAGEMENT</span>
           <h2>Manage Food Items</h2>
-          <p>Search, filter, and manage your restaurant menu.</p>
+          <p>
+            Keep your menu up to date. Search, filter, and manage your dishes.
+          </p>
         </div>
 
-        <span className="food-count">
-          {filteredFoods.length} items
-        </span>
+        <div className="food-count" aria-live="polite">
+          <span className="food-count-number">
+            {filteredFoods.length}
+          </span>
+          <span>
+            {filteredFoods.length === 1 ? 'item shown' : 'items shown'}
+          </span>
+        </div>
       </div>
 
-      <div className="food-list-controls">
-        <div className="food-search">
-          <span className="search-icon">⌕</span>
+      <div className="food-list-toolbar">
+
+        <label className="food-search" htmlFor="food-list-search">
+          <Search size={19} aria-hidden="true" />
 
           <input
-            type="text"
-            placeholder="Search food by name or description..."
+            id="food-list-search"
+            type="search"
+            placeholder="Search food..."
             value={searchTerm}
-            onChange={(event) =>
-              setSearchTerm(event.target.value)
-            }
+            onChange={(event) => setSearchTerm(event.target.value)}
           />
-        </div>
+        </label>
 
-        <div className="food-category-filter">
-          <label htmlFor="food-list-category">
-            Category
-          </label>
+        <label
+          className="food-category-filter"
+          htmlFor="food-list-category"
+        >
+          <SlidersHorizontal size={17} aria-hidden="true" />
+
+          <span className="food-filter-label">Category</span>
 
           <select
             id="food-list-category"
@@ -106,87 +132,100 @@ function handleEdit(food) {
               </option>
             ))}
           </select>
-        </div>
+        </label>
+
+        <button
+          className="food-clear-filters"
+          type="button"
+          onClick={clearFilters}
+        >
+          <RotateCcw size={16} aria-hidden="true" />
+          Clear filters
+        </button>
+
       </div>
 
-      <div className="food-category-chips">
-        {categories.map((category) => (
-          <button
-            key={category}
-            type="button"
-            className={
-              selectedCategory === category
-                ? 'category-chip active'
-                : 'category-chip'
-            }
-            onClick={() => setSelectedCategory(category)}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+      {filteredFoods.length > 0 ? (
 
-      {filteredFoods.length === 0 ? (
-        <div className="food-empty-state">
-          <h3>No food items found</h3>
-          <p>Try another search or select a different category.</p>
+        <div className="food-items-grid">
 
-          <button type="button" onClick={clearFilters}>
-            Clear filters
-          </button>
-        </div>
-      ) : (
-        <div className="admin-food-items">
           {filteredFoods.map((food) => (
-            <article
-              className="admin-food-item"
-              key={food.id}
-            >
-              <img
-                className="admin-food-image"
-                src={food.image}
-                alt={food.name}
-              />
 
-              <div className="admin-food-details">
-                <h3>{food.name}</h3>
+            <article className="food-item-card" key={food.id}>
 
-                <p className="admin-food-description">
-                  {food.description}
-                </p>
+              <div className="food-item-image">
 
-                <div className="admin-food-meta">
-                  <span className="admin-food-price">
-                    {food.price}
-                  </span>
+                {food.image ? (
+                  <img
+                    src={food.image}
+                    alt={food.name || 'Food item'}
+                  />
+                ) : (
+                  <div className="food-image-placeholder">
+                    <UtensilsCrossed size={35} />
+                  </div>
+                )}
 
-                  <span className="admin-food-category">
+                {food.category && (
+                  <span className="food-item-category">
                     {food.category}
                   </span>
-                </div>
+                )}
+
               </div>
 
-              <div className="admin-food-actions">
+              <div className="food-item-details">
+
+                <h3>{food.name || 'Unnamed food'}</h3>
+
+                <p>
+                  {food.description || 'No description available.'}
+                </p>
+
+                <strong className="food-item-price">
+                  {formatPrice(food.price)}
+                </strong>
+
+              </div>
+
+              <div className="food-item-actions">
+
                 <button
+                  className="food-edit-btn"
                   type="button"
-                  className="food-edit-button"
                   onClick={() => handleEdit(food)}
+                  aria-label={`Edit ${food.name}`}
                 >
+                  <Pencil size={17} />
                   Edit
                 </button>
 
                 <button
+                  className="food-delete-btn"
                   type="button"
-                  className="food-delete-button"
                   onClick={() => handleDelete(food)}
+                  aria-label={`Delete ${food.name}`}
                 >
+                  <Trash2 size={17} />
                   Delete
                 </button>
+
               </div>
+
             </article>
+
           ))}
+
         </div>
+
+      ) : (
+
+        <p className="food-list-empty" role="status">
+          No food items match your search.
+        </p>
+
       )}
+
     </section>
   );
 }

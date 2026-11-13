@@ -1,22 +1,29 @@
 
-/* ===== Navbar ===== */
+/* =========================================
+   FOODHUB - PROFESSIONAL NAVBAR
+========================================= */
 
 .navbar {
   width: 100%;
-  background-color: #242a26;
-  border-bottom: 1px solid #39423b;
+  background: #202a23;
+  border-bottom: 1px solid #35443a;
   position: sticky;
   top: 0;
   z-index: 1000;
   font-family: Arial, sans-serif;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
 }
+
+/* =========================================
+   NAVBAR CONTAINER
+========================================= */
 
 .navbar-container {
   width: 100%;
-  max-width: 1280px;
+  max-width: none;
   min-height: 76px;
-  margin: 0 auto;
-  padding: 12px 28px;
+  margin: 0;
+  padding: 12px 30px;
   box-sizing: border-box;
 
   display: flex;
@@ -25,19 +32,28 @@
   gap: 28px;
 }
 
-/* ===== Brand ===== */
+/* =========================================
+   BRAND / LOGO
+========================================= */
 
 .navbar-logo {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  margin-right: auto;
 
   color: #ffffff;
   text-decoration: none;
   font-size: 25px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-weight: 750;
+  letter-spacing: -0.6px;
+
+  transition: opacity 0.2s ease;
+}
+
+.navbar-logo:hover {
+  opacity: 0.88;
 }
 
 .logo-icon {
@@ -45,15 +61,18 @@
 }
 
 .logo-highlight {
-  color: #8bc69b;
+  color: #91c69e;
 }
 
-/* ===== Navigation layout ===== */
+/* =========================================
+   NAVIGATION
+========================================= */
 
 .navbar-menu {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 30px;
+  margin-left: auto;
 }
 
 .navbar-links {
@@ -75,51 +94,100 @@
   position: relative;
   padding: 9px 0;
 
-  color: #e5e9e5;
+  color: #dce5de;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
 
   transition: color 0.2s ease;
 }
 
+.navbar-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  width: 0;
+  height: 2px;
+
+  background: #91c69e;
+  transition: width 0.2s ease;
+}
+
 .navbar-links a:hover {
-  color: #9bd5a9;
+  color: #a9d5b2;
 }
 
-/* Keyboard accessibility */
-
-.navbar a:focus-visible,
-.navbar button:focus-visible {
-  outline: 2px solid #9bd5a9;
-  outline-offset: 4px;
+.navbar-links a:hover::after {
+  width: 100%;
 }
 
-/* ===== Login / Logout button ===== */
+/* =========================================
+   MY ORDERS BUTTON
+========================================= */
+
+.navbar-orders-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 9px 13px;
+
+  background: rgba(145, 198, 158, 0.09);
+  color: #a9d5b2;
+
+  border: 1px solid rgba(145, 198, 158, 0.25);
+  border-radius: 5px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-orders-button:hover {
+  background: #315d3e;
+  border-color: #568565;
+  color: #ffffff;
+}
+
+.navbar-orders-button:active {
+  transform: translateY(1px);
+}
+
+/* =========================================
+   LOGIN / LOGOUT BUTTON
+========================================= */
 
 .navbar-auth-button {
   padding: 10px 19px;
-  background-color: #39764b;
+
+  background: #39764b;
   color: #ffffff;
 
   border: 1px solid #39764b;
   border-radius: 5px;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
+  font-family: inherit;
+
   cursor: pointer;
 
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
+  transition: background 0.2s ease,
+              border-color 0.2s ease;
 }
 
 .navbar-auth-button:hover {
-  background-color: #2d603c;
+  background: #2d603c;
   border-color: #2d603c;
 }
 
-/* ===== Cart ===== */
+/* =========================================
+   CART
+========================================= */
 
 .navbar-cart {
   display: flex;
@@ -127,7 +195,19 @@
   flex-shrink: 0;
 }
 
-/* ===== Mobile menu button ===== */
+/* =========================================
+   KEYBOARD ACCESSIBILITY
+========================================= */
+
+.navbar a:focus-visible,
+.navbar button:focus-visible {
+  outline: 2px solid #a9d5b2;
+  outline-offset: 4px;
+}
+
+/* =========================================
+   MOBILE MENU BUTTON
+========================================= */
 
 .navbar-toggle {
   display: none;
@@ -140,14 +220,23 @@
 
   background: transparent;
   color: #ffffff;
-  border: 1px solid #59645b;
+
+  border: 1px solid #59685d;
   border-radius: 5px;
 
   font-size: 23px;
   cursor: pointer;
+
+  transition: background 0.2s ease;
 }
 
-/* ===== Tablet and mobile ===== */
+.navbar-toggle:hover {
+  background: #35483a;
+}
+
+/* =========================================
+   TABLET AND MOBILE
+========================================= */
 
 @media (max-width: 900px) {
   .navbar-container {
@@ -159,6 +248,7 @@
 
   .navbar-logo {
     font-size: 23px;
+    margin-right: auto;
   }
 
   .navbar-toggle {
@@ -169,10 +259,13 @@
   .navbar-menu {
     display: none;
     width: 100%;
+
     flex-direction: column;
     align-items: stretch;
     gap: 18px;
+
     padding: 12px 0 8px;
+    margin-left: 0;
   }
 
   .navbar-menu.is-open {
@@ -193,10 +286,29 @@
   .navbar-links a {
     display: block;
     width: 100%;
-    padding: 13px 4px;
+    padding: 13px 5px;
     box-sizing: border-box;
 
-    border-bottom: 1px solid #39423b;
+    border-bottom: 1px solid #35443a;
+  }
+
+  .navbar-links a::after {
+    display: none;
+  }
+
+  .navbar-orders-button {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 13px 5px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #35443a;
+    border-radius: 0;
+  }
+
+  .navbar-orders-button:hover {
+    background: rgba(145, 198, 158, 0.08);
   }
 
   .navbar-auth-button {
@@ -209,7 +321,9 @@
   }
 }
 
-/* ===== Small phones ===== */
+/* =========================================
+   SMALL PHONES
+========================================= */
 
 @media (max-width: 480px) {
   .navbar-container {
@@ -231,5 +345,17 @@
 
   .navbar-links a {
     font-size: 14px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar *,
+  .navbar *::before,
+  .navbar *::after {
+    transition: none !important;
   }
 }

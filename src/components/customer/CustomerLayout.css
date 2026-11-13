@@ -1,0 +1,149 @@
+/* =====================================
+   CUSTOMER LAYOUT
+===================================== */
+
+.customer-layout {
+  --customer-sidebar-width: 260px;
+
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: calc(100vh - 76px);
+
+  background: #f5f7f5;
+  color: #26382e;
+}
+
+/* =====================================
+   MAIN CONTENT
+===================================== */
+
+.customer-main {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  min-height: calc(100vh - 76px);
+
+  display: flex;
+  flex-direction: column;
+
+  transition: width 0.25s ease;
+}
+
+/* =====================================
+   COLLAPSED SIDEBAR
+===================================== */
+
+.customer-layout.sidebar-collapsed {
+  --customer-sidebar-width: 78px;
+}
+
+/* =====================================
+   PAGE CONTENT
+===================================== */
+
+.customer-page-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  padding: 30px 34px 42px;
+}
+
+/* =====================================
+   MOBILE MENU BUTTON
+===================================== */
+
+.customer-mobile-menu {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 14px 16px 0 auto;
+
+  background: #ffffff;
+  color: #244b35;
+  border: 1px solid #dfe8e1;
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.customer-mobile-menu:hover {
+  background: #edf4ee;
+  border-color: #c7d9cb;
+}
+
+.customer-mobile-menu:focus-visible {
+  outline: 2px solid #4b8b61;
+  outline-offset: 3px;
+}
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media (max-width: 1024px) {
+  .customer-page-content {
+    padding: 25px 24px 35px;
+  }
+}
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 768px) {
+  .customer-layout {
+    display: block;
+  }
+
+  .customer-main {
+    width: 100%;
+    min-height: calc(100vh - 76px);
+  }
+
+  .customer-mobile-menu {
+    display: flex;
+  }
+
+  .customer-page-content {
+    padding: 20px 16px 30px;
+  }
+}
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media (max-width: 480px) {
+  .customer-page-content {
+    padding: 16px 12px 26px;
+  }
+
+  .customer-mobile-menu {
+    width: 37px;
+    height: 37px;
+    margin-top: 12px;
+  }
+}
+
+/* =====================================
+   ACCESSIBILITY
+===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .customer-main,
+  .customer-mobile-menu {
+    transition: none;
+  }
+}

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './FoodForm.css';
 
 function FoodForm({ onSave, editingFood, onCancelEdit }) {
@@ -37,11 +37,13 @@ function FoodFormFields({
   );
 
   const [price, setPrice] = useState(
-    editingFood?.price.replace('$', '') ?? ''
+    String(editingFood?.price ?? '').replace('$', '')
   );
 
-  const [image, setImage] = useState(editingFood?.image ?? '');
+  // Store the actual selected File object
+  const [imageFile, setImageFile] = useState(null);
 
+  // Existing image URL or temporary preview URL
   const [imagePreview, setImagePreview] = useState(
     editingFood?.image ?? ''
   );
@@ -52,6 +54,16 @@ function FoodFormFields({
 
   const [imageError, setImageError] = useState('');
 
+  // Clean up temporary preview URLs
+  useEffect(() => {
+    return () => {
+      if (imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
+
+  // Handle image selection
   function handleImageChange(event) {
     const file = event.target.files[0];
 
@@ -71,26 +83,20 @@ function FoodFormFields({
       return;
     }
 
-    const reader = new FileReader();
+    // Store actual file instead of Base64
+    setImageFile(file);
 
-    reader.onloadend = () => {
-      if (typeof reader.result === 'string') {
-        setImage(reader.result);
-        setImagePreview(reader.result);
-      }
-    };
+    // Generate temporary preview
+    const previewUrl = URL.createObjectURL(file);
 
-    reader.onerror = () => {
-      setImageError('Unable to read this image. Please try another.');
-    };
-
-    reader.readAsDataURL(file);
+    setImagePreview(previewUrl);
   }
 
+  // Handle form submission
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!image) {
+    if (!imageFile && !imagePreview) {
       setImageError('Please upload a food image.');
       return;
     }
@@ -98,10 +104,14 @@ function FoodFormFields({
     const food = {
       name: name.trim(),
       description: description.trim(),
-      price: `$${price}`,
-      image,
+      price,
       category,
     };
+
+    // Include the actual file only when a new image is selected
+    if (imageFile) {
+      food.imageFile = imageFile;
+    }
 
     if (editingFood) {
       food.id = editingFood.id;
@@ -119,7 +129,7 @@ function FoodFormFields({
       setName('');
       setDescription('');
       setPrice('');
-      setImage('');
+      setImageFile(null);
       setImagePreview('');
       setCategory('Pizza');
       setImageError('');
@@ -205,7 +215,7 @@ function FoodFormFields({
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          required={!image}
+          required={!imagePreview}
         />
 
         <small className="food-form-help">

@@ -11,21 +11,23 @@ function Cart() {
   const { cart, removeFromCart } = useCart();
 
   const totalPrice = cart.reduce((total, food) => {
-  const price = Number(
-    food.price?.$numberDecimal ?? food.price
-  );
+    const price = Number(
+      food.price?.$numberDecimal ?? food.price
+    );
 
-  return total + (Number.isFinite(price) ? price : 0);
- }, 0);
+    return total + (Number.isFinite(price) ? price : 0);
+  }, 0);
 
   return (
     <section className="cart-section">
+
+      {/* CART HEADER */}
       <div className="cart-header">
         <div>
           <p className="cart-subtitle">FOODHUB ORDER</p>
           <h2>Your Shopping Cart</h2>
           <p className="cart-description">
-            Review your favorite food before checking out.
+            Review your selected food before placing your order.
           </p>
         </div>
 
@@ -38,10 +40,46 @@ function Cart() {
         <div className="empty-cart">
           <div className="empty-cart-icon">🛒</div>
           <h3>Your cart is empty</h3>
-          <p>Add some delicious food from our menu to get started.</p>
+          <p>
+            Add some delicious food from our menu to get started.
+          </p>
         </div>
       ) : (
         <>
+          {/* CHECKOUT SUMMARY AT TOP */}
+          <div className="cart-summary">
+            <div className="cart-total-info">
+              <span>Total Amount</span>
+              <strong>${totalPrice.toFixed(2)}</strong>
+            </div>
+
+            <button
+              type="button"
+              className="checkout-button"
+              onClick={() => setShowCheckout(!showCheckout)}
+              aria-expanded={showCheckout}
+            >
+              {showCheckout ? 'Close Checkout' : 'Proceed to Checkout'}
+              <span>{showCheckout ? ' ↑' : ' →'}</span>
+            </button>
+          </div>
+
+          {/* CHECKOUT FORM - ONLY AFTER CLICK */}
+          {showCheckout && (
+            <div className="checkout-form-wrapper">
+              <Checkout
+                cartitems={cart}
+                totalPrice={totalPrice}
+              />
+            </div>
+          )}
+
+          {/* CART FOOD ITEMS */}
+          <div className="cart-items-heading">
+            <h3>Your Selected Items</h3>
+            <span>{cart.length} items</span>
+          </div>
+
           <div className="cart-items">
             {cart.map((food, index) => (
               <CartItem
@@ -51,35 +89,9 @@ function Cart() {
               />
             ))}
           </div>
-
-          <div className="cart-summary">
-            <div className="cart-total-row">
-              <span>Total Amount</span>
-              <strong>${totalPrice.toFixed(2)}</strong>
-            </div>
-
-            <p className="cart-summary-note">
-              Your order total before any additional charges.
-            </p>
-
-            <button
-              type="button"
-              className="checkout-button"
-              onClick={() => setShowCheckout(true)}
-            >
-              Proceed to Checkout
-              <span aria-hidden="true"> →</span>
-            </button>
-          </div>
-
-          {showCheckout && (
-            <Checkout
-              cartitems={cart}
-              totalPrice={totalPrice}
-            />
-          )}
         </>
       )}
+
     </section>
   );
 }

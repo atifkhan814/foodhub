@@ -6,7 +6,7 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  background: #f4f6f2;
+  background: #f3f6f3;
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
@@ -15,17 +15,20 @@
 .admin-login-form {
   width: 100%;
   max-width: 420px;
-  padding: 32px;
+  padding: 38px;
   background: white;
-  border: 1px solid #e1e7e1;
-  border-radius: 10px;
+  border: 1px solid #dfe8e0;
+  border-radius: 14px;
+  box-shadow: 0 18px 45px rgba(27, 57, 38, 0.09);
   box-sizing: border-box;
+  text-align: left;
 }
 
 .admin-login-form h1 {
   margin: 0 0 10px;
   color: #183d32;
-  font-size: 28px;
+  font-size: 30px;
+  letter-spacing: -0.7px;
 }
 
 .admin-login-form p {
@@ -46,26 +49,28 @@
 /* Input Fields */
 .admin-login-form input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid #d5ddd6;
-  border-radius: 5px;
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid #d5dfd7;
+  border-radius: 7px;
   box-sizing: border-box;
   font-size: 14px;
 }
 
 .admin-login-form input:focus {
-  outline: 2px solid #f3c2a7;
-  border-color: #ed6b2f;
+  outline: 3px solid rgba(57, 118, 75, 0.14);
+  border-color: #39764b;
 }
 
 /* Login Button */
 .admin-login-form button {
   width: 100%;
   margin-top: 24px;
-  padding: 13px;
+  min-height: 48px;
+  padding: 13px 16px;
   border: none;
-  border-radius: 5px;
-  background: #ed6b2f;
+  border-radius: 7px;
+  background: #28613c;
   color: white;
   font-size: 15px;
   font-weight: 700;
@@ -73,7 +78,12 @@
 }
 
 .admin-login-form button:hover {
-  background: #cf541e;
+  background: #1f5031;
+}
+
+.admin-login-form button:focus-visible {
+  outline: 3px solid rgba(57, 118, 75, 0.22);
+  outline-offset: 3px;
 }
 
 /* Error Message */
@@ -87,7 +97,7 @@
 /* Mobile Layout */
 @media (max-width: 480px) {
   .admin-login-form {
-    padding: 24px 20px;
+    padding: 28px 22px;
   }
 
   .admin-login-form h1 {

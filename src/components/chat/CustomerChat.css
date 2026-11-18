@@ -1,0 +1,403 @@
+
+/* ==============================
+   CUSTOMER CHAT WIDGET
+================================ */
+
+.customer-chat {
+    position: fixed;
+    right: 28px;
+    bottom: 25px;
+    z-index: 999;
+    font-family: inherit;
+}
+
+/* ==============================
+   FLOATING CHAT BUTTON
+================================ */
+
+.customer-chat-toggle {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: #263c30;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(20, 40, 28, 0.25);
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.customer-chat-toggle:hover {
+    background: #365744;
+    transform: translateY(-3px);
+}
+
+.customer-chat-dot {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 13px;
+    height: 13px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: #4caf78;
+}
+
+/* ==============================
+   CHAT WINDOW
+================================ */
+
+.customer-chat-window {
+    width: 370px;
+    height: 540px;
+    max-height: calc(100dvh - 45px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e6eae7;
+    border-radius: 14px;
+    box-shadow: 0 12px 45px rgba(25, 45, 32, 0.18);
+    animation: chatWindowOpen 0.25s ease;
+}
+
+@keyframes chatWindowOpen {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==============================
+   CHAT HEADER
+================================ */
+
+.customer-chat-header {
+    min-height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 19px;
+    background: #263c30;
+    color: #ffffff;
+}
+
+.customer-chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.customer-chat-avatar {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.13);
+    color: #ffffff;
+}
+
+.customer-chat-header-info h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+}
+
+.customer-chat-header-info span {
+    color: #d1ded5;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.customer-chat-close {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.customer-chat-close:hover {
+    background: rgba(255, 255, 255, 0.13);
+}
+
+/* ==============================
+   MESSAGE AREA
+================================ */
+
+.customer-chat-messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px 16px;
+    overflow-y: auto;
+    background: #f7f9f7;
+    scroll-behavior: smooth;
+}
+
+.customer-chat-messages::-webkit-scrollbar {
+    width: 5px;
+}
+
+.customer-chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.customer-chat-messages::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #cbd5ce;
+}
+
+/* ==============================
+   EMPTY CHAT STATE
+================================ */
+
+.customer-chat-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    color: #52665a;
+}
+
+.customer-chat-empty > svg {
+    margin-bottom: 15px;
+    color: #477456;
+}
+
+.customer-chat-empty h4 {
+    margin: 0 0 8px;
+    color: #263c30;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.customer-chat-empty p {
+    max-width: 230px;
+    margin: 0;
+    color: #7b8980;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.customer-chat-status {
+    margin: auto;
+    color: #718078;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* ==============================
+   MESSAGE ALIGNMENT
+================================ */
+
+.customer-chat-message {
+    display: flex;
+    width: 100%;
+}
+
+.customer-message {
+    justify-content: flex-end;
+}
+
+.admin-message {
+    justify-content: flex-start;
+}
+
+.customer-chat-bubble {
+    max-width: 82%;
+    min-width: 80px;
+    padding: 11px 13px 8px;
+    border-radius: 12px;
+    overflow-wrap: anywhere;
+}
+
+.customer-chat-bubble p {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    font-weight: 400;
+}
+
+.customer-chat-bubble span {
+    display: block;
+    margin-top: 6px;
+    font-size: 10px;
+    text-align: right;
+    opacity: 0.75;
+}
+
+/* Customer message */
+
+.customer-message .customer-chat-bubble {
+    border-bottom-right-radius: 3px;
+    background: #315c42;
+    color: #ffffff;
+}
+
+/* Admin message */
+
+.admin-message .customer-chat-bubble {
+    border: 1px solid #e5eae6;
+    border-bottom-left-radius: 3px;
+    background: #ffffff;
+    color: #28382e;
+    box-shadow: 0 2px 5px rgba(20, 40, 28, 0.04);
+}
+
+/* ==============================
+   MESSAGE INPUT AREA
+================================ */
+
+.customer-chat-input-area {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-top: 1px solid #e9eeea;
+    background: #ffffff;
+}
+
+.customer-chat-input-area input {
+    flex: 1;
+    min-width: 0;
+    height: 43px;
+    padding: 0 14px;
+    border: 1px solid #e0e7e1;
+    border-radius: 8px;
+    outline: none;
+    background: #f8faf8;
+    color: #263c30;
+    font-family: inherit;
+    font-size: 13px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.customer-chat-input-area input::placeholder {
+    color: #9aa69d;
+}
+
+.customer-chat-input-area input:focus {
+    border-color: #527b5d;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(82, 123, 93, 0.09);
+}
+
+.customer-chat-input-area input:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.customer-chat-input-area button {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    background: #315c42;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.customer-chat-input-area button:hover:not(:disabled) {
+    background: #244a33;
+    transform: translateY(-1px);
+}
+
+.customer-chat-input-area button:disabled {
+    background: #aebbb1;
+    cursor: not-allowed;
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+================================ */
+
+/* Tablets and smaller screens */
+
+@media (max-width: 600px) {
+    .customer-chat {
+        right: 18px;
+        bottom: 18px;
+    }
+
+    .customer-chat-toggle {
+        width: 56px;
+        height: 56px;
+    }
+
+    .customer-chat-window {
+        width: min(370px, calc(100vw - 36px));
+        height: min(540px, calc(100dvh - 36px));
+        max-height: calc(100dvh - 36px);
+    }
+}
+
+/* Small mobile screens */
+
+@media (max-width: 380px) {
+    .customer-chat {
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .customer-chat-window {
+        width: calc(100vw - 24px);
+        height: calc(100dvh - 24px);
+        max-height: calc(100dvh - 24px);
+    }
+
+    .customer-chat-header {
+        padding: 13px;
+    }
+
+    .customer-chat-messages {
+        padding: 15px 12px;
+    }
+
+    .customer-chat-input-area {
+        padding: 10px;
+    }
+}
+
+/* Reduced motion accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+    .customer-chat-window {
+        animation: none;
+    }
+
+    .customer-chat-toggle,
+    .customer-chat-close,
+    .customer-chat-input-area button {
+        transition: none;
+    }
+}

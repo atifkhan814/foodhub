@@ -17,7 +17,7 @@ export const processDemoPayment = async (req, res) => {
     // Find the order belonging to the logged-in customer
     const order = await Order.findOne({
       _id: orderId,
-      userId: req.session.userId,
+      userId: req.user._id,
     });
 
     if (!order) {

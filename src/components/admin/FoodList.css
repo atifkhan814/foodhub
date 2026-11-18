@@ -6,9 +6,12 @@
 .admin-food-list {
   width: 100%;
   padding: 24px;
-  background: #f6f8f6;
+  background: #ffffff;
   color: #26382e;
   font-family: Arial, sans-serif;
+  border: 1px solid #e2e9e3;
+  border-radius: 10px;
+  box-shadow: 0 5px 18px rgba(34, 63, 43, 0.035);
   box-sizing: border-box;
 }
 

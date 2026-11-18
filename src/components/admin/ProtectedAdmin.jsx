@@ -1,50 +1,66 @@
 
-import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router';
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router";
 
 function ProtectedAdmin({ children }) {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [checking, setChecking] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [checking, setChecking] = useState(true);
 
-  useEffect(() => {
-    async function checkAdmin() {
-      try {
-        const response = await fetch(
-          'http://localhost:8000/api/users/me',
-          {
-            credentials: 'include',
-          }
-        );
+    useEffect(() => {
+        let ignore = false;
 
-        if (!response.ok) {
-          setIsAdmin(false);
-          return;
+        async function checkAdmin() {
+            try {
+                const response = await fetch(
+                    "http://localhost:8000/api/users/admin/me",
+                    {
+                        credentials: "include"
+                    }
+                );
+
+                if (!response.ok) {
+                    if (!ignore) {
+                        setIsAdmin(false);
+                    }
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (!ignore) {
+                    setIsAdmin(data.user?.role === "admin");
+                }
+
+            } catch (error) {
+                console.error("Admin authentication error:", error);
+
+                if (!ignore) {
+                    setIsAdmin(false);
+                }
+
+            } finally {
+                if (!ignore) {
+                    setChecking(false);
+                }
+            }
         }
 
-        const data = await response.json();
+        checkAdmin();
 
-        setIsAdmin(data.user?.role === 'admin');
+        return () => {
+            ignore = true;
+        };
+    }, []);
 
-      } catch (error) {
-        console.error('Admin authentication error:', error);
-        setIsAdmin(false);
-      } finally {
-        setChecking(false);
-      }
+    if (checking) {
+        return <p>Checking admin access...</p>;
     }
 
-    checkAdmin();
-  }, []);
+    if (!isAdmin) {
+        return <Navigate to="/admin-login" replace />;
+    }
 
-  if (checking) {
-    return <p>Checking admin access...</p>;
-  }
-
-  if (!isAdmin) {
-    return <Navigate to="/admin-login" replace />;
-  }
-
-  return children;
+    return children;
 }
 
 export default ProtectedAdmin;

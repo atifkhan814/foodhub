@@ -14,10 +14,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Cart from './pages/CartPage';
 
-import CustomerLayout from './components/customer/CustomerLayout';
-
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
+import CustomerChat from './components/chat/CustomerChat';
 
 import { useCart } from './context/useCart';
 import { Toaster } from 'react-hot-toast';
@@ -32,13 +31,10 @@ function App() {
       <Navbar cartCount={cart.length} />
 
       <Routes>
-
-        {/* Customer Pages with Sidebar */}
-        <Route element={<CustomerLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Route>
+        {/* Customer Pages */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
         {/* Other Public Pages */}
         <Route path="/login" element={<Login />} />
@@ -57,7 +53,17 @@ function App() {
           }
         />
 
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedAdmin>
+              <AdminPage />
+            </ProtectedAdmin>
+          }
+        />
       </Routes>
+
+      <CustomerChat />
 
       <Footer />
     </>

@@ -11,7 +11,6 @@ function Navbar({ cartCount }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Identify admin pages.
   const isAdminPage = location.pathname.startsWith('/admin');
 
   const [currentUser, setCurrentUser] = useState(null);
@@ -58,7 +57,7 @@ function Navbar({ cartCount }) {
     };
   }, [location.pathname]);
 
-  // Close the mobile navigation menu.
+  // Close mobile navigation.
   function closeMenu() {
     setMenuOpen(false);
   }
@@ -106,7 +105,7 @@ function Navbar({ cartCount }) {
     }
   }
 
-  // Keep the existing admin Menu navigation.
+  // Navigate to homepage Menu section.
   function handleMenuClick(event) {
     event.preventDefault();
     closeMenu();
@@ -156,36 +155,31 @@ function Navbar({ cartCount }) {
           <div
             className={`navbar-menu ${menuOpen ? 'is-open' : ''}`}
           >
+            {/* Main Navigation */}
             <ul className="navbar-links">
+              <li>
+                <Link to="/" onClick={closeMenu}>
+                  Home
+                </Link>
+              </li>
 
-              {/* Admin Navigation */}
-              {isAdminPage && (
-                <>
-                  <li>
-                    <Link to="/" onClick={closeMenu}>
-                      Home
-                    </Link>
-                  </li>
+              <li>
+                <Link to="/#menu" onClick={handleMenuClick}>
+                  Menu
+                </Link>
+              </li>
 
-                  <li>
-                    <Link to="/#menu" onClick={handleMenuClick}>
-                      Menu
-                    </Link>
-                  </li>
+              <li>
+                <Link to="/about" onClick={closeMenu}>
+                  About
+                </Link>
+              </li>
 
-                  <li>
-                    <Link to="/about" onClick={closeMenu}>
-                      About
-                    </Link>
-                  </li>
-
-                  <li>
-                    <Link to="/contact" onClick={closeMenu}>
-                      Contact
-                    </Link>
-                  </li>
-                </>
-              )}
+              <li>
+                <Link to="/contact" onClick={closeMenu}>
+                  Contact
+                </Link>
+              </li>
 
               {/* Customer Authentication */}
               {!isAdminPage && (

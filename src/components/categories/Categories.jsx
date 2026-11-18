@@ -1,3 +1,5 @@
+
+import { ChevronDown, SlidersHorizontal } from 'lucide-react';
 import './Categories.css';
 
 function Categories({ selectedCategory, setSelectedCategory }) {
@@ -9,31 +11,63 @@ function Categories({ selectedCategory, setSelectedCategory }) {
     { name: 'Salads', icon: '🥗' },
   ];
 
+  const activeCategory =
+    categories.find((category) => category.name === selectedCategory) ||
+    categories[0];
+
   return (
     <section className="categories-section">
-      <div className="categories-heading">
-        <span className="categories-eyebrow">FIND YOUR FAVORITE</span>
-        <h2>Explore Our Menu</h2>
-        <p>Fresh flavors and delicious choices for every craving.</p>
-      </div>
+      <div className="categories-toolbar">
 
-      <div className="categories-list">
-        {categories.map((category) => (
-          <button
-            key={category.name}
-            type="button"
-            className={
-              selectedCategory === category.name
-                ? 'category-item active'
-                : 'category-item'
-            }
-            onClick={() => setSelectedCategory(category.name)}
-            aria-pressed={selectedCategory === category.name}
+        <div className="categories-intro">
+          <div className="categories-mark">
+            <SlidersHorizontal size={17} />
+          </div>
+
+          <div className="categories-intro-text">
+            <span className="categories-eyebrow">MENU FILTER</span>
+            <h3>Browse by category</h3>
+            <p>Choose a category to find your favorite food.</p>
+          </div>
+        </div>
+
+        <div className="category-select-area">
+          <label
+            className="category-select-label"
+            htmlFor="food-category"
           >
-            <span className="category-icon">{category.icon}</span>
-            <span>{category.name}</span>
-          </button>
-        ))}
+            CATEGORY
+          </label>
+
+          <div className="category-select-control">
+            <span className="category-selected-icon">
+              {activeCategory.icon}
+            </span>
+
+            <select
+              id="food-category"
+              className="categories-dropdown"
+              value={selectedCategory}
+              onChange={(event) =>
+                setSelectedCategory(event.target.value)
+              }
+              aria-label="Filter food by category"
+            >
+              {categories.map((category) => (
+                <option key={category.name} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+
+            <ChevronDown
+              className="category-chevron"
+              size={16}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+
       </div>
     </section>
   );

@@ -1,6 +1,12 @@
 
 import { Link } from 'react-router';
-import { ArrowRight, Leaf, ChefHat, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  Leaf,
+  ChefHat,
+  Users,
+  Sparkles,
+} from 'lucide-react';
 
 import './Hero.css';
 
@@ -14,25 +20,30 @@ function Hero() {
 
   return (
     <>
-      <section className="hero-section">
+      <section className="hero-section" aria-labelledby="hero-title">
         <div className="hero-container">
+
+          {/* LEFT: HERO CONTENT */}
           <div className="hero-content">
-            <p className="hero-eyebrow">
-              FRESHLY PREPARED, JUST FOR YOU
-            </p>
 
-            <span className="hero-accent-line"></span>
+            <div className="hero-eyebrow">
+              <span className="hero-eyebrow-line"></span>
+              <Sparkles size={15} />
+              <span>GOOD FOOD. GOOD MOOD.</span>
+            </div>
 
-            <h1>
-              Delicious Food,
+            <h1 id="hero-title">
+              Fresh flavors.
               <br />
-              Made for You
+              <span>Made to make</span>
+              <br />
+              your day.
             </h1>
 
             <p className="hero-description">
-              Fresh ingredients, bold flavors, and meals made
-              with care. Find your new favorite and enjoy every
-              bite.
+              From your favorite comfort food to something new,
+              discover delicious meals prepared with care and
+              served fresh for every craving.
             </p>
 
             <div className="hero-actions">
@@ -42,7 +53,7 @@ function Hero() {
                 onClick={handleExploreMenu}
               >
                 Explore Our Menu
-                <ArrowRight size={19} />
+                <ArrowRight size={18} />
               </button>
 
               <Link
@@ -50,79 +61,99 @@ function Hero() {
                 className="hero-secondary-button"
               >
                 Discover Our Story
-                <ArrowRight size={19} />
+                <span>
+                  <ArrowRight size={17} />
+                </span>
               </Link>
             </div>
 
-            <div className="hero-highlights">
-              <div className="hero-highlight">
-                <Leaf size={32} />
-                <div>
-                  <h3>100%</h3>
-                  <p>Fresh Ingredients</p>
-                </div>
-              </div>
-
-              <div className="hero-highlight">
-                <ChefHat size={34} />
-                <div>
-                  <h3>Made with</h3>
-                  <p>Care</p>
-                </div>
-              </div>
-
-              <div className="hero-highlight">
-                <Users size={34} />
-                <div>
-                  <h3>Flavors for</h3>
-                  <p>Everyone</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="hero-image-wrapper">
-            <img
-              src="/food-images/food-img.jpg"
-              alt="Delicious restaurant food"
-              className="hero-image"
-            />
-
-            <div className="hero-image-badge">
-              <span className="hero-badge-icon">
-                <Leaf size={19} />
+            <div className="hero-content-note">
+              <span className="hero-note-icon">
+                <Leaf size={16} />
               </span>
-              <span>Made fresh daily</span>
+              Fresh ingredients. Delicious moments. Every day.
             </div>
+
           </div>
+
+          {/* RIGHT: HERO IMAGE */}
+          <div className="hero-visual">
+
+            <div className="hero-image-frame">
+
+              <img
+                src="/food-images/food-img.jpg"
+                alt="Freshly prepared delicious FoodHub meal"
+                className="hero-image"
+                fetchPriority="high"
+              />
+
+              <div className="hero-image-overlay"></div>
+
+              {/* Image information */}
+              <div className="hero-image-badge">
+                <div className="hero-badge-icon">
+                  <Leaf size={19} />
+                </div>
+
+                <div className="hero-badge-content">
+                  <span>OUR PROMISE</span>
+                  <strong>Made fresh daily</strong>
+                </div>
+
+                <span className="hero-badge-check">✓</span>
+              </div>
+
+              <div className="hero-image-caption">
+                GOOD FOOD, MADE WITH CARE
+              </div>
+
+            </div>
+
+            <div className="hero-visual-accent"></div>
+
+          </div>
+
         </div>
       </section>
 
+      {/* FEATURE STRIP */}
       <section className="hero-features">
         <div className="hero-features-container">
+
           <div className="hero-feature-item">
-            <Leaf size={42} />
-            <div>
+            <div className="hero-feature-icon">
+              <Leaf size={23} />
+            </div>
+
+            <div className="hero-feature-text">
               <h3>Fresh Ingredients</h3>
               <p>Quality in every bite</p>
             </div>
           </div>
 
           <div className="hero-feature-item">
-            <ChefHat size={44} />
-            <div>
+            <div className="hero-feature-icon">
+              <ChefHat size={24} />
+            </div>
+
+            <div className="hero-feature-text">
               <h3>Made with Care</h3>
               <p>Prepared fresh for you</p>
             </div>
           </div>
 
           <div className="hero-feature-item">
-            <Users size={44} />
-            <div>
+            <div className="hero-feature-icon">
+              <Users size={24} />
+            </div>
+
+            <div className="hero-feature-text">
               <h3>Something for Everyone</h3>
               <p>Find your favorite dish</p>
             </div>
           </div>
+
         </div>
       </section>
     </>

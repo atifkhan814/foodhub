@@ -1,198 +1,287 @@
-/* Categories section */
+
+/* =========================================
+   FOODHUB - REFINED CATEGORY FILTER
+========================================= */
+
 .categories-section {
-  padding: 48px 24px 42px;
-  background: #fbf7f0;
+  width: 100%;
+  padding: 10px clamp(16px, 2.5vw, 40px) 5px;
+  margin: 0;
+  background: #ffffff;
   font-family: Arial, sans-serif;
-  text-align: center;
   box-sizing: border-box;
 }
 
-/* Heading */
-.categories-heading {
-  max-width: 760px;
-  margin: 0 auto 30px;
+/* =========================================
+   OUTER TOOLBAR
+========================================= */
+
+.categories-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  width: 100%;
+  max-width: none;
+  min-height: 70px;
+
+  margin: 0;
+  padding: 10px 16px;
+
+  background: #f8f9f6;
+  border: 1px solid #e5eae2;
+  border-radius: 7px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.categories-toolbar:hover {
+  border-color: #cbd9c9;
+}
+
+/* =========================================
+   LEFT SIDE
+========================================= */
+
+.categories-intro {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.categories-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 37px;
+  height: 37px;
+
+  color: #ffffff;
+  background: #294c35;
+  border-radius: 6px;
+}
+
+.categories-intro-text {
+  min-width: 0;
 }
 
 .categories-eyebrow {
-  display: inline-block;
-  margin-bottom: 10px;
-  color: #c65d32;
-  font-size: 12px;
+  display: block;
+  margin-bottom: 3px;
+
+  color: #719176;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1.3px;
 }
 
-.categories-heading h2 {
-  margin: 0 0 12px;
-  color: #243b2d;
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.categories-heading p {
+.categories-intro-text h3 {
   margin: 0;
-  color: #73786f;
+  color: #26352a;
   font-size: 15px;
-  line-height: 1.7;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
-/* Category buttons layout */
-.categories-list {
-  display: flex;
-  justify-content: center;
-  align-items: stretch;
-  flex-wrap: wrap;
-  gap: 16px;
-  max-width: 1100px;
-  margin: 0 auto;
+.categories-intro-text p {
+  margin: 3px 0 0;
+  color: #858d84;
+  font-size: 11px;
+  line-height: 1.4;
 }
 
-/* Individual category button */
-.category-item {
+/* =========================================
+   RIGHT SIDE - DROPDOWN
+========================================= */
+
+.category-select-area {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex: 1 1 145px;
-  max-width: 180px;
-  min-height: 132px;
-  padding: 20px 16px;
-  color: #344638;
-  background: #ffffff;
-  border: 1px solid #e8e0d5;
-  border-bottom: 3px solid transparent;
-  border-radius: 8px;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease;
+  flex-shrink: 0;
+  width: 200px;
 }
 
-/* Category emoji */
-.category-icon {
+.category-select-label {
+  display: block;
+  margin-bottom: 4px;
+
+  color: #778176;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.category-select-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 37px;
+
+  background: #ffffff;
+  border: 1px solid #dfe6dc;
+  border-radius: 5px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.category-select-control:hover {
+  border-color: #a9bea8;
+}
+
+.category-select-control:focus-within {
+  border-color: #64866b;
+  box-shadow: 0 0 0 3px rgba(100, 134, 107, 0.09);
+}
+
+/* Selected food icon */
+
+.category-selected-icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  z-index: 1;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  background: #fff0df;
-  border-radius: 50%;
-  font-size: 28px;
-  transition: background-color 0.2s ease;
+
+  width: 23px;
+  height: 23px;
+
+  background: #edf3eb;
+  border-radius: 5px;
+
+  font-size: 14px;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
-/* Hover effect */
-.category-item:hover {
-  color: #b94f25;
-  border-color: #e7b18e;
-  border-bottom-color: #d66b2c;
-  transform: translateY(-3px);
+/* Native select */
+
+.categories-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+  height: 100%;
+  padding: 0 34px 0 40px;
+
+  color: #293b2e;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
 }
 
-.category-item:hover .category-icon {
-  background: #ffe2c7;
+/* Dropdown arrow */
+
+.category-chevron {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+
+  color: #64866b;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
-/* Selected category */
-.category-item.active {
-  color: #ffffff;
-  background: #285b3b;
-  border-color: #285b3b;
-  border-bottom-color: #e99a52;
-}
+/* =========================================
+   TABLET
+========================================= */
 
-.category-item.active .category-icon {
-  background: #ffffff;
-}
-
-/* Keyboard accessibility */
-.category-item:focus-visible {
-  outline: 3px solid #e99a52;
-  outline-offset: 3px;
-}
-
-/* Tablet */
 @media (max-width: 900px) {
   .categories-section {
-    padding: 40px 22px 34px;
+    padding: 9px 22px 5px;
   }
 
-  .categories-heading h2 {
-    font-size: 30px;
-  }
-
-  .categories-list {
+  .categories-toolbar {
+    min-height: 68px;
+    padding: 9px 13px;
     gap: 12px;
   }
 
-  .category-item {
-    flex-basis: 130px;
-    min-height: 122px;
-    padding: 16px 12px;
+  .categories-mark {
+    width: 35px;
+    height: 35px;
+  }
+
+  .categories-intro {
+    gap: 9px;
+  }
+
+  .categories-intro-text h3 {
+    font-size: 14px;
+  }
+
+  .categories-intro-text p {
+    font-size: 10px;
+  }
+
+  .category-select-area {
+    width: 175px;
   }
 }
 
-/* Mobile */
-@media (max-width: 600px) {
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
   .categories-section {
-    padding: 32px 16px 28px;
+    padding: 8px 16px 4px;
   }
 
-  .categories-heading {
-    margin-bottom: 24px;
-  }
-
-  .categories-eyebrow {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-  }
-
-  .categories-heading h2 {
-    font-size: 26px;
-  }
-
-  .categories-heading p {
-    font-size: 14px;
-  }
-
-  .categories-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .category-item {
-    width: 100%;
-    max-width: none;
-    min-width: 0;
-    min-height: 118px;
-    padding: 15px 8px;
+  .categories-toolbar {
+    align-items: stretch;
+    flex-direction: column;
     gap: 10px;
+    padding: 12px;
+  }
+
+  .categories-mark {
+    width: 35px;
+    height: 35px;
+  }
+
+  .categories-intro-text h3 {
     font-size: 14px;
   }
 
-  .category-icon {
-    width: 48px;
-    height: 48px;
-    font-size: 25px;
+  .category-select-area {
+    width: 100%;
+  }
+
+  .category-select-control {
+    height: 38px;
   }
 }
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .category-item,
-  .category-icon {
+  .categories-toolbar,
+  .category-select-control {
     transition: none;
-  }
-
-  .category-item:hover {
-    transform: none;
   }
 }

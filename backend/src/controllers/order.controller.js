@@ -113,7 +113,7 @@ export const createOrder = async (req, res) => {
 
     // Save the order in MongoDB
     const order = await Order.create({
-      userId: req.session.userId,
+      userId: req.user._id,
 
       orderNumber: `FH-${Date.now()}`,
 
@@ -160,7 +160,7 @@ export const createOrder = async (req, res) => {
 export const getCustmorOrders = async (req, res) => {
   try {
     const orders = await Order.find({
-      userId: req.session.userId,
+      userId: req.user._id,
     }).sort({ createdAt: -1 });
 
     return res.status(200).json({
